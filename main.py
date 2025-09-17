@@ -44,7 +44,7 @@ async def main():
     logger.info(f"| Config:\n{config.pretty_text}")
 
     # Registed models
-    model_manager.init_models(use_local_proxy=True)
+    model_manager.init_models(use_local_proxy=False)
     logger.info("| Registed models: %s", ", ".join(model_manager.registed_models.keys()))
 
     # Create agent
