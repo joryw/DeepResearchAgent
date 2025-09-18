@@ -101,6 +101,7 @@ async def create_agent(config):
     # Load MCP tools
     mcpadapt = MCPAdapt(config.mcp_tools_config, AsyncToolAdapter())
     mcpadapt_tools = await mcpadapt.tools()
+    logger.info(f"| Discovered MCP tools: {', '.join(mcpadapt_tools.keys())}")
     
     if config.use_hierarchical_agent:
 

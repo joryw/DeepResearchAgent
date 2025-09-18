@@ -316,7 +316,7 @@ class ModelManager(metaclass=Singleton):
             
             # gemini-2.5-pro
             model_name = "gemini-2.5-pro"
-            model_id = "gemini-2.5-pro-preview-06-05"
+            model_id = "gemini-2.5-pro"
             client = AsyncOpenAI(
                 api_key=api_key,
                 base_url=self._check_local_api_base(local_api_base_name="SKYWORK_OPENROUTER_BJ_API_BASE",
@@ -382,7 +382,7 @@ class ModelManager(metaclass=Singleton):
             models = [
                 {
                     "model_name": "gemini-2.5-pro",
-                    "model_id": "gemini-2.5-pro-preview-06-05",
+                    "model_id": "gemini-2.5-pro",
                 },
             ]
             

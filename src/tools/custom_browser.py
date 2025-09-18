@@ -5,6 +5,7 @@ import asyncio
 import base64
 import json
 from typing import Generic, Optional, TypeVar, Any
+from dataclasses import asdict as dataclasses_asdict
 from browser_use import Browser as BrowserUseBrowser
 from browser_use import BrowserConfig
 from browser_use.browser.context import BrowserContext, BrowserContextConfig
@@ -555,7 +556,13 @@ Page content:
             state_info = {
                 "url": state.url,
                 "title": state.title,
-                "tabs": [tab.model_dump() for tab in state.tabs],
+                "tabs": [
+                    (tab.model_dump() if hasattr(tab, "model_dump") else (
+                        dataclasses_asdict(tab) if hasattr(tab, "__dataclass_fields__") else (
+                            tab if isinstance(tab, dict) else {"value": str(tab)}
+                        )
+                    )) for tab in state.tabs
+                ],
                 "help": "[0], [1], [2], etc., represent clickable indices corresponding to the elements listed. Clicking on these indices will navigate to or interact with the respective content behind them.",
                 "interactive_elements": (
                     state.element_tree.clickable_elements_to_string()

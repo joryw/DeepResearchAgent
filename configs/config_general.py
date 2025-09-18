@@ -17,10 +17,11 @@ general_agent_config = dict(
     max_steps = 20,
     template_path = "src/agent/general_agent/prompts/general_agent.yaml",
     provide_run_summary = True,
-    tools = ["python_interpreter_tool", "image_generator_tool", "video_generator_tool"],
+    tools = ["python_interpreter_tool"],
     mcp_tools = [
         "calculate_average_of_deviations",
         "calculate_statistical_average",
+        "fddapi_mcp_get_gold_spot_future_quote",
         "get_wikipedia_page_revision_history",
         "find_first_year_for_date",
         "count_letter_frequency",

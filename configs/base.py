@@ -16,7 +16,7 @@ web_searcher_tool_config = dict(
 
 deep_researcher_tool_config  = dict(
     type="deep_researcher_tool",
-    model_id = "gpt-4.1",
+    model_id = "claude37-sonnet-thinking",
     max_depth = 2,
     max_insights = 20,
     time_limit_seconds = 60,
@@ -42,11 +42,7 @@ mcp_tools_config = {
             "args": ["src/mcp/server.py"],
             "env": {"DEBUG": "true"}
         },
-        # Remote server
-        # "calendar": {
-        #     "url": "https://calendar-api.example.com/mcp",
-        #     "transport": "streamable-http"
-        # }
+
     }
 }
 

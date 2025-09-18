@@ -123,7 +123,7 @@ async def answer_single_question(config, example):
 
         final_result = await prepare_response(augmented_question,
                                               agent_memory,
-                                              reformulation_model=model_manager.registed_models["gpt-4.1"])
+                                              reformulation_model=model_manager.registed_models["gemini-2.5-pro"])
 
         output = str(final_result)
         for memory_step in agent.memory.steps:

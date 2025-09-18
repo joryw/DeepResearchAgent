@@ -224,8 +224,17 @@ class LiteLLMModel(ApiModel):
 
         self._last_input_token_count = response.usage.prompt_tokens
         self._last_output_token_count = response.usage.completion_tokens
+        def _extract_message_dict(message: Any) -> dict:
+            if hasattr(message, "model_dump"):
+                return message.model_dump(include={"role", "content", "tool_calls"})
+            if isinstance(message, dict):
+                return {k: message.get(k) for k in ("role", "content", "tool_calls")}
+            if isinstance(message, str):
+                return {"role": "assistant", "content": message, "tool_calls": None}
+            return {"role": "assistant", "content": str(message), "tool_calls": None}
+
         return ChatMessage.from_dict(
-            response.choices[0].message.model_dump(include={"role", "content", "tool_calls"}),
+            _extract_message_dict(response.choices[0].message),
             raw=response,
             token_usage=TokenUsage(
                 input_tokens=response.usage.prompt_tokens,

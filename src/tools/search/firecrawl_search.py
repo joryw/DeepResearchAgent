@@ -21,20 +21,40 @@ def search(params):
 
     response = app.search(
         query=params["q"],
-        limit= params.get("num", 10),
-        tbs= params.get("tbs", ""),
+        limit=params.get("num", 10),
+        # Firecrawl v2 expects None/omitted when no time filter; empty string is invalid
+        tbs=(params.get("tbs") or None),
     )
 
-    data = response.data
-
+    # Firecrawl v2 returns SearchData with fields like .web/.news/.images
     results = []
-    for item in data:
-        title = item.get("title", "")
-        url = item.get("url", "")
-        description = item.get("description", "")
-        results.append(SearchItem(title=title,
-                                  url=url,
-                                  description=description))
+    sources = []
+    # Collect available sources safely
+    for source_name in ("web", "news", "images"):
+        items = getattr(response, source_name, None)
+        if items:
+            sources.extend(items)
+
+    for item in sources:
+        # item may be a pydantic model with attributes or a dict
+        title = (
+            getattr(item, "title", None)
+            or (item.get("title") if isinstance(item, dict) else None)
+            or ""
+        )
+        url = (
+            getattr(item, "url", None)
+            or (item.get("url") if isinstance(item, dict) else None)
+            or ""
+        )
+        description = (
+            getattr(item, "description", None)
+            or getattr(item, "snippet", None)
+            or (item.get("description") if isinstance(item, dict) else None)
+            or (item.get("snippet") if isinstance(item, dict) else None)
+            or ""
+        )
+        results.append(SearchItem(title=title, url=url, description=description))
 
     return results
 
@@ -57,6 +77,8 @@ class FirecrawlSearchEngine(WebSearchEngine):
         }
         if filter_year is not None:
             params["tbs"] = f"cdr:1,cd_min:01/01/{filter_year},cd_max:12/31/{filter_year}"
+        else:
+            params["tbs"] = None;
 
         results = search(params)
 

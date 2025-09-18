@@ -44,7 +44,7 @@ async def main():
     logger.info(f"| Config:\n{config.pretty_text}")
 
     # Registed models
-    model_manager.init_models(use_local_proxy=True)
+    model_manager.init_models(use_local_proxy=False)
     logger.info("| Registed models: %s", ", ".join(model_manager.registed_models.keys()))
 
     # Create agent
@@ -55,7 +55,7 @@ async def main():
     # task = "Use the python interpreter tool to calculate 2 + 3 and return the result."
     # task = "Please generate an image of a futuristic city skyline at sunset, with flying cars and neon lights."
     # task = "Please generate a video of a cat playing with a ball of yarn, with a playful and energetic atmosphere."
-    task = "Find the 2023 last revision of 'English Wikipedia' with url 'https://en.wikipedia.org/wiki/English_Wikipedia' and return the result."
+    task = "请调用 get_gold_spot_future_quote 查询黄金期货与现货实时行情，并返回核心价格与涨跌幅。"
     res = await agent.run(task)
     logger.info(f"| Result: {res}")
 

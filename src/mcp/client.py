@@ -45,7 +45,7 @@ async def main():
         model_client = OpenAI("<your-api-key>")
 
         response = model_client.responses.create(
-            model="gpt-4.1",
+            model="gemini-2.5-pro",
             input=[{"role": "user", "content": "What is the weather like in Paris today?"}],
             tools=tools
         )

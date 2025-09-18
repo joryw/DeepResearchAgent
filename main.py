@@ -52,7 +52,7 @@ async def main():
     logger.visualize_agent_tree(agent)
 
     # Run example
-    task = "Use deep_researcher_agent to search the latest papers on the topic of 'AI Agent' and then summarize it."
+    task = "请调用 get_gold_spot_future_quote 查询黄金期货与现货实时行情，并返回核心价格与涨跌幅。"
     res = await agent.run(task)
     logger.info(f"| Result: {res}")
 

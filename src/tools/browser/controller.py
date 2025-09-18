@@ -91,7 +91,17 @@ class Controller(BrowserUseController):
             )
             async def done(params: ExtendedOutputModel):
                 # Exclude success from the output JSON since it's an internal parameter
-                output_dict = params.data.model_dump()
+                data_obj = params.data
+                if hasattr(data_obj, "model_dump"):
+                    output_dict = data_obj.model_dump()
+                elif hasattr(data_obj, "__dict__"):
+                    output_dict = dict(data_obj.__dict__)
+                elif hasattr(data_obj, "__dataclass_fields__"):
+                    output_dict = asdict(data_obj)
+                elif isinstance(data_obj, dict):
+                    output_dict = data_obj
+                else:
+                    output_dict = {"value": str(data_obj)}
 
                 # Enums are not serializable, convert to string
                 for key, value in output_dict.items():
@@ -1116,7 +1126,11 @@ class Controller(BrowserUseController):
         """Execute an action"""
 
         try:
-            for action_name, params in action.model_dump(exclude_unset=True).items():
+            for action_name, params in (
+                action.model_dump(exclude_unset=True)
+                if hasattr(action, "model_dump") else
+                (action if isinstance(action, dict) else {})
+            ).items():
                 if params is not None:
                     # with Laminar.start_as_current_span(
                     # 	name=action_name,

@@ -25,7 +25,7 @@ oai_deep_research_tool_config = dict(
 oai_deep_research_agent_config = dict(
     type="general_agent",
     name="oai_deep_research_agent",
-    model_id="gpt-4.1",
+    model_id="gemini-2.5-pro",
     description = "A general agent that can perform deep research using openai's deep research capabilities.",
     max_steps = 20,
     template_path = "src/agent/general_agent/prompts/general_agent.yaml",
@@ -34,4 +34,4 @@ oai_deep_research_agent_config = dict(
     mcp_tools = [],
 )
 
-agent_config = oai_deep_research_agent_config
+agent_config = oai_deep_research_agent_conf`ig
